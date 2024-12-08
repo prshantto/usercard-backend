@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req,res)=>{
+app.get('/users', (req,res)=>{
     userModel.find({}).then((users)=>{
         res.json(users)
     })
@@ -36,6 +36,13 @@ app.post("/create-user",async (req, res) => {
         website : website,
         company : company
     });
+  })
+
+  app.get("/delete-user", async (req,res)=>{
+    await userModel.findOneAndDelete({
+        _id : req.query.id
+    })
+    res.send(`user with ${req.query.id} deleted`)
   })
 
 app.listen(3001, ()=>console.log("running..."))
